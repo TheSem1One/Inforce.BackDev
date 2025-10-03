@@ -1,8 +1,11 @@
 using System.Net.Mime;
 using System.Text.Json.Serialization;
 using API.Transformers;
+using Application.Common.Interfaces;
+using Infrastructure.Helper;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
@@ -28,13 +31,14 @@ namespace API
 
             builder.Services.Configure<ConnectionOptions>(
                 builder.Configuration.GetSection(ConnectionOptions.SectionName));
+            builder.Services.Configure<TokenOptions>(
+                builder.Configuration.GetSection(TokenOptions.SectionName));
 
             builder.Services.AddDbContext<DatabaseContext>(opts =>
                 opts.UseNpgsql(
                     builder.Configuration.GetConnectionString("ApiDatabase")
                 )
             );
-
 
             builder.Services.AddCors(o => o.AddPolicy("AllowAny", corsPolicyBuilder =>
             {
@@ -43,7 +47,12 @@ namespace API
                     .AllowAnyMethod()
                     .AllowAnyOrigin();
             }));
+
             // Add services to the container.
+
+            builder.Services.AddScoped<IAuth, AuthService>();
+            builder.Services.AddTransient<Hashing>();
+            builder.Services.AddTransient<TokenManipulation>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
