@@ -4,6 +4,7 @@ using Application.DTO.User;
 using Domain.Entity;
 using Infrastructure.Helper;
 using Infrastructure.Persistence;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
@@ -15,15 +16,12 @@ namespace Infrastructure.Services
         private readonly DatabaseContext _db = db;
         public async Task<string> Login(LoginDto dto)
         {
-            await UserExists(dto.Email);
-
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(dto.Email.ToLower()));
-
-            if (_hash.HashingPassword(user.Password) == _hash.HashingPassword(dto.Password))
+            if (user.Password == _hash.HashingPassword(dto.Password))
             {
                 var userDto = new UserTokenDto
                 {
-                    Id = user.Id,
+                    Username = user.Username,
                     Role = user.Role
                 };
                 return _token.CreateToken(userDto);
@@ -34,32 +32,43 @@ namespace Infrastructure.Services
 
         public async Task<string> Register(RegisterDto dto)
         {
-            if (await UserExists(dto.Email))
+            if (await EmailExists(dto.Email) && await UserExists(dto.Username))
             {
-                var user = new User
-                {
-                    Username = dto.Username,
-                    Email = dto.Email,
-                    Password = _hash.HashingPassword(dto.Password)
-                };
+                dto.Password = _hash.HashingPassword(dto.Password);
+                var user = dto.Adapt<User>();
+                //var user = new User
+                //{
+                //   Username = dto.Username,
+                // Email = dto.Email,
+                //Password = _hash.HashingPassword(dto.Password)
+                //};
                 await _db.Users.AddAsync(user);
                 await _db.SaveChangesAsync();
 
-                var userDto = new UserTokenDto
-                {
-                    Id = user.Id,
-                    Role = user.Role
-                };
+                var userDto = user.Adapt<UserTokenDto>();
+                // var userDto = new UserTokenDto
+                // {//
+                //    Id = user.Id,
+                //   Role = user.Role
+                //   };
 
                 return _token.CreateToken(userDto);
             }
             else throw new Exception("User already exists");
         }
-        public async Task<bool> UserExists(string email)
+        public async Task<bool> EmailExists(string email)
         {
             if (await _db.Users.AnyAsync(user => user.Email.ToLower().Equals(email.ToLower())))
             {
-                throw new Exception("User does not exist");
+                throw new Exception("Email already exist");
+            }
+            return true;
+        }
+        public async Task<bool> UserExists(string username)
+        {
+            if (await _db.Users.AnyAsync(user => user.Username.ToLower().Equals(username.ToLower())))
+            {
+                throw new Exception("Username already exist");
             }
             return true;
         }

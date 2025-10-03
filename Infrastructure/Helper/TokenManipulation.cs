@@ -14,12 +14,12 @@ namespace Infrastructure.Helper
         public string CreateToken(UserTokenDto dto)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Token));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 claims: GetClaims(dto),
-                expires: DateTime.Now.AddMonths(5),
-                signingCredentials: creds
+                expires: DateTime.UtcNow.AddMonths(5),
+                signingCredentials: cred
             );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
@@ -29,7 +29,7 @@ namespace Infrastructure.Helper
         {
             var claims = new List<Claim>
             {
-              new Claim(ClaimTypes.Name, dto.Id.ToString()),
+              new Claim(ClaimTypes.Name, dto.Username),
               new Claim(ClaimTypes.Role, dto.Role)
             };
             return claims;
