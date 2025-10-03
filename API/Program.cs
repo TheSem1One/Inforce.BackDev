@@ -1,8 +1,11 @@
 using System.Net.Mime;
 using System.Text.Json.Serialization;
 using API.Transformers;
+using Infrastructure.Options;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -22,6 +25,16 @@ namespace API
             builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGen(c =>
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Inforce.API", Version = "v1" }));
+
+            builder.Services.Configure<ConnectionOptions>(
+                builder.Configuration.GetSection(ConnectionOptions.SectionName));
+
+            builder.Services.AddDbContext<DatabaseContext>(opts =>
+                opts.UseNpgsql(
+                    builder.Configuration.GetConnectionString("ApiDatabase")
+                )
+            );
+
 
             builder.Services.AddCors(o => o.AddPolicy("AllowAny", corsPolicyBuilder =>
             {
