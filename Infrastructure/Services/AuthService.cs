@@ -34,8 +34,7 @@ namespace Infrastructure.Services
 
         public async Task<string> Register(RegisterDto dto)
         {
-            if (await UserExists(dto.Email)) throw new Exception("User already exists");
-            else
+            if (await UserExists(dto.Email))
             {
                 var user = new User
                 {
@@ -54,16 +53,15 @@ namespace Infrastructure.Services
 
                 return _token.CreateToken(userDto);
             }
+            else throw new Exception("User already exists");
         }
-
-
         public async Task<bool> UserExists(string email)
         {
             if (await _db.Users.AnyAsync(user => user.Email.ToLower().Equals(email.ToLower())))
             {
-                return true;
+                throw new Exception("User does not exist");
             }
-            throw new Exception("User does not exist");
+            return true;
         }
     }
 }

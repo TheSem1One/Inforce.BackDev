@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Text.Json.Serialization;
 using API.Transformers;
 using Application.Common.Interfaces;
+using Application.Features.Urls;
 using Infrastructure.Helper;
 using Infrastructure.Options;
 using Infrastructure.Persistence;
@@ -56,7 +57,7 @@ namespace API
             builder.Services.AddTransient<TokenManipulation>();
             builder.Services.AddTransient<UrlShortener>();
 
-
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllQuery).Assembly));
 
 
             builder.Services.AddControllers();
