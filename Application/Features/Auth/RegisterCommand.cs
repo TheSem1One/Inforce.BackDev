@@ -1,24 +1,22 @@
 ﻿using Application.Common.Interfaces;
-using Application.DTO.Auth;
+using Application.Features.Auth.Dto;
 using Mapster;
 using MediatR;
 
 namespace Application.Features.Auth
 {
-    public class RegisterCommand : IRequest<string>
-    {
-        public string Username { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public string Email { get; set; } = null!;
-    }
+    public record RegisterCommand(string Username, string Email,
+        string Password, string ConfirmPassword) : IRequest<string>;
 
-    public class RegisterCommandHandler(IAuth auth) : IRequestHandler<RegisterCommand, string>
+
+    public class RegisterCommandHandler(IAuthService authService) : IRequestHandler<RegisterCommand, string>
     {
-        private readonly IAuth _auth = auth;
+        private readonly IAuthService _authService = authService;
+
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var map = request.Adapt<RegisterDto>();
-            return await _auth.Register(map);
+            var registerDto = request.Adapt<RegisterDto>();
+            return await _authService.RegisterAsync(registerDto);
         }
     }
 }

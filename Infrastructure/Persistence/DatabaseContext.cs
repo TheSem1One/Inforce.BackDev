@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Domain.Entities;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 

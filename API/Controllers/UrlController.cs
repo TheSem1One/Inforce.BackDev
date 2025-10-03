@@ -12,32 +12,32 @@ namespace API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Create([FromBody] CreateCommand command)
+        public async Task<ActionResult<bool>> Create([FromBody] CreateUrlCommand urlCommand)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(urlCommand);
             return Ok(result);
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ShortUrl>>> GetAll()
         {
-            var result = await _mediator.Send(new GetAllQuery());
+            var result = await _mediator.Send(new GetUrlQuery());
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShortUrl>> Get(int id)
+        public async Task<ActionResult<ShortUrl>> Get(Guid id)
         {
-            var result = await _mediator.Send(new GetByIdQuery { Id = id });
+            var result = await _mediator.Send(new GetUrlByQuery(id));
             return Ok(result);
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ShortUrl>> Delete(int id)
+        public async Task<ActionResult<ShortUrl>> Delete(Guid id)
         {
-            var result = await _mediator.Send(new DeleteQuery { Id = id });
-            return Ok(result);
+            await _mediator.Send(new DeleteUrlCommand(id));
+            return Ok();
         }
 
     }

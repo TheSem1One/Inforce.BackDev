@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using System.Text.Json.Serialization;
+using API.Context;
 using API.Extensions;
 using API.Transformers;
 using Application.Common.Interfaces;
@@ -21,6 +22,8 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddHttpContextAccessor();
 
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
@@ -54,13 +57,14 @@ namespace API
 
             // Add services to the container.
 
-            builder.Services.AddScoped<IAuth, AuthService>();
-            builder.Services.AddScoped<IUrl, UrlService>();
+            builder.Services.AddScoped<IAuthService, AuthServiceService>();
+            builder.Services.AddScoped<IUrlService, UrlServiceService>();
+            builder.Services.AddScoped<UserContext>();
             builder.Services.AddTransient<Hashing>();
             builder.Services.AddTransient<TokenManipulation>();
             builder.Services.AddTransient<UrlShortener>();
 
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllQuery).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetUrlQuery).Assembly));
 
 
             builder.Services.AddControllers();
@@ -88,11 +92,13 @@ namespace API
             }
             app.UseSwagger();
             app.UseSwaggerUI();
+
             app.UseCors("AllowAny");
+
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

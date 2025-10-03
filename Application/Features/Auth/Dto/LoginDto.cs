@@ -1,4 +1,4 @@
-﻿namespace Application.DTO.Auth
+﻿namespace Application.Features.Auth.Dto
 {
     public class LoginDto
     {

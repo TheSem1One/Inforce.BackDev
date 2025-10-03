@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.DTO.User;
+using Application.Features.Auth.Dto;
 using Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -30,7 +30,8 @@ namespace Infrastructure.Helper
             var claims = new List<Claim>
             {
               new Claim(ClaimTypes.Name, dto.Username),
-              new Claim(ClaimTypes.Role, dto.Role)
+              new Claim("Id", dto.Id.ToString()),
+              new Claim(ClaimTypes.Role, dto.Role.ToString())
             };
             return claims;
         }

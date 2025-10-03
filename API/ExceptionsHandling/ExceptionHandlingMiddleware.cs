@@ -1,5 +1,5 @@
-﻿using Application.DTO;
-using System.Net;
+﻿using System.Net;
+using API.ExceptionsHandling;
 using ILogger = Serilog.ILogger;
 
 namespace API.Middleware

@@ -1,13 +1,10 @@
-﻿namespace Domain.Entity
+﻿namespace Application.Features.Urls.Dto
 {
-    public class ShortUrl
+    public class UrlDto
     {
         public int Id { get; set; }
         public string OriginalUrl { get; set; } = null!;
         public string ShortedUrl { get; set; } = null!;
         public string CreateBy { get; set; } = null!;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-
     }
 }

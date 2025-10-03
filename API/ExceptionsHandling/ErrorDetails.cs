@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Application.DTO
+namespace API.ExceptionsHandling
 {
     public class ErrorDetails
     {
