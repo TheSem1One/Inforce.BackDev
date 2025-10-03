@@ -6,7 +6,7 @@
         public string OriginalUrl { get; set; } = null!;
         public string ShortedUrl { get; set; } = null!;
         public string CreateBy { get; set; } = null!;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
     }

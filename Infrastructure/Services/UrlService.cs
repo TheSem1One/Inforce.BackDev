@@ -19,7 +19,7 @@ namespace Infrastructure.Services
             var ulr = new ShortUrl()
             {
                 OriginalUrl = dto.OriginalUrl,
-                ShortedUrl = _shortener.CreateShortUrl(dto.ShortedUrl),
+                ShortedUrl = _shortener.CreateShortUrl(dto.OriginalUrl),
                 CreateBy = dto.CreateBy
             };
             await _db.ShortUrl.AddAsync(ulr);

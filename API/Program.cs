@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using System.Text.Json.Serialization;
+using API.Extensions;
 using API.Transformers;
 using Application.Common.Interfaces;
 using Application.Features.Urls;
@@ -41,6 +42,8 @@ namespace API
                 )
             );
 
+            builder.Services.AddAuth(builder.Configuration);
+
             builder.Services.AddCors(o => o.AddPolicy("AllowAny", corsPolicyBuilder =>
             {
                 corsPolicyBuilder
@@ -64,6 +67,7 @@ namespace API
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+
             builder.Services
                 .AddControllers(options =>
                 {
@@ -86,7 +90,7 @@ namespace API
             app.UseSwaggerUI();
             app.UseCors("AllowAny");
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

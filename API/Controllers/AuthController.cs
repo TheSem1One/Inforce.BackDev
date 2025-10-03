@@ -1,5 +1,4 @@
-﻿using Application.DTO.Auth;
-using Application.Features.Auth;
+﻿using Application.Features.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

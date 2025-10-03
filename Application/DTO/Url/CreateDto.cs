@@ -3,7 +3,6 @@
     public class CreateDto
     {
         public string OriginalUrl { get; set; } = null!;
-        public string ShortedUrl { get; set; } = null!;
         public string CreateBy { get; set; } = null!;
     }
 }

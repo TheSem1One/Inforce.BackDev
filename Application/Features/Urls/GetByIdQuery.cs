@@ -9,9 +9,9 @@ namespace Application.Features.Urls
         public int Id { get; set; }
     }
 
-    public class GetByIdHandler(IUrl url): IRequestHandler<GetByIdQuery, ShortUrl>
+    public class GetByIdHandler(IUrl url) : IRequestHandler<GetByIdQuery, ShortUrl>
     {
-        private IUrl _url = url;
+        private readonly IUrl _url = url;
         public async Task<ShortUrl> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _url.Get(request.Id);

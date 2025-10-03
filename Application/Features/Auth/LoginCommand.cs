@@ -16,8 +16,8 @@ namespace Application.Features.Auth
         private readonly IAuth _auth = auth;
         public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-           var map = request.Adapt<LoginDto>();
-           return await _auth.Login(map);
+            var map = request.Adapt<LoginDto>();
+            return await _auth.Login(map);
         }
     }
 }

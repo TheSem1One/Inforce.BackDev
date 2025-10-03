@@ -2,7 +2,6 @@
 using System.Text;
 using Infrastructure.Options;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Helper
 {
@@ -12,8 +11,8 @@ namespace Infrastructure.Helper
         public string CreateShortUrl(string originalUrl)
         {
             string chars = _options.Value.Chars;
-            var length = chars.Length / 5;
-            var randomBytes = new byte[chars.Length];
+            var length = _options.Value.Length;
+            var randomBytes = new byte[length];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomBytes);

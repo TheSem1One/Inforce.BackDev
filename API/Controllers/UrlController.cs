@@ -1,10 +1,12 @@
 ﻿using Application.Features.Urls;
 using Domain.Entity;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UrlController(IMediator mediator) : ApiController
     {
         private readonly IMediator _mediator = mediator;
