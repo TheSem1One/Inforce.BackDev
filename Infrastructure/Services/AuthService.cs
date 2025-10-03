@@ -16,7 +16,9 @@ namespace Infrastructure.Services
         public async Task<string> Login(LoginDto dto)
         {
             await UserExists(dto.Email);
+
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(dto.Email.ToLower()));
+
             if (_hash.HashingPassword(user.Password) == _hash.HashingPassword(dto.Password))
             {
                 var userDto = new UserTokenDto
@@ -26,6 +28,7 @@ namespace Infrastructure.Services
                 };
                 return _token.CreateToken(userDto);
             }
+
             throw new Exception("Password is incorrect");
         }
 
@@ -42,11 +45,13 @@ namespace Infrastructure.Services
                 };
                 await _db.Users.AddAsync(user);
                 await _db.SaveChangesAsync();
+
                 var userDto = new UserTokenDto
                 {
                     Id = user.Id,
                     Role = user.Role
                 };
+
                 return _token.CreateToken(userDto);
             }
         }

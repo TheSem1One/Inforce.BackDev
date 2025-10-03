@@ -51,8 +51,10 @@ namespace API
             // Add services to the container.
 
             builder.Services.AddScoped<IAuth, AuthService>();
+            builder.Services.AddScoped<IUrl, UrlService>();
             builder.Services.AddTransient<Hashing>();
             builder.Services.AddTransient<TokenManipulation>();
+            builder.Services.AddTransient<UrlShortener>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
