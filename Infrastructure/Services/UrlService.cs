@@ -3,6 +3,7 @@ using Application.DTO.Url;
 using Domain.Entity;
 using Infrastructure.Helper;
 using Infrastructure.Persistence;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
@@ -36,9 +37,9 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<GetUrlDto>> GetAll()
         {
-
             var urls = await _db.ShortUrl.Select(u => true).ToListAsync();
-            return (IEnumerable<GetUrlDto>)urls;
+            var map = urls.Adapt<List<GetUrlDto>>();
+            return map;
         }
 
         public async Task<bool> Delete(int id)
