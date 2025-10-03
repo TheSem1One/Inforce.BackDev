@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using Application.Features.UserContext;
 
-namespace API.Context
+namespace Infrastructure.Context
 {
-    public class UserContext
+    public class UserContext : IUserContext
     {
         public Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Role { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+
         public UserContext(IHttpContextAccessor httpContextAccessor, ILogger<UserContext> logger)
         {
             var httpContext = httpContextAccessor.HttpContext;

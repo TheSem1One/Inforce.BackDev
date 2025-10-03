@@ -11,6 +11,7 @@ namespace Application.Features.Urls
     public class GetUrlQueryHandler(IUrlService urlService) : IRequestHandler <GetUrlQuery,IEnumerable<UrlDto>>
     {
         private readonly IUrlService _urlService = urlService;
+
         public async Task<IEnumerable<UrlDto>> Handle(GetUrlQuery request, CancellationToken cancellationToken)
         {
            var result = await _urlService.GetUrlAsync();

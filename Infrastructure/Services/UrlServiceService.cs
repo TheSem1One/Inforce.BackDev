@@ -1,6 +1,6 @@
-﻿using API.Context;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Features.Urls.Dto;
+using Application.Features.UserContext;
 using Domain.Entity;
 using Infrastructure.Helper;
 using Infrastructure.Persistence;
@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services
 {
-    public class UrlServiceService(DatabaseContext db, UrlShortener shortener, UserContext context) : IUrlService
+    public class UrlServiceService(DatabaseContext db, UrlShortener shortener, IUserContext context) : IUrlService
     {
-        private readonly UserContext _context = context;
+        private readonly IUserContext _context = context;
         private readonly UrlShortener _shortener = shortener;
         private readonly DatabaseContext _db = db;
 

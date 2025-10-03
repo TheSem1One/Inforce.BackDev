@@ -11,6 +11,7 @@ namespace Application.Features.Urls
     public class CreateUrlCommandHandler(IUrlService urlService) : IRequestHandler<CreateUrlCommand, ShortUrl>
     {
         private readonly IUrlService _urlService = urlService;
+
         public async Task<ShortUrl> Handle(CreateUrlCommand request, CancellationToken cancellationToken)
         {
             var createUrlDto = request.Adapt<CreateUrlDto>();

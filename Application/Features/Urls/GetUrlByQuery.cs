@@ -10,6 +10,7 @@ namespace Application.Features.Urls
     public class GetUrlByQueryHandler(IUrlService urlService) : IRequestHandler<GetUrlByQuery, ShortUrl>
     {
         private readonly IUrlService _urlService = urlService;
+
         public async Task<ShortUrl> Handle(GetUrlByQuery request, CancellationToken cancellationToken)
         {
             return await _urlService.GetUrlByAsync(request.Id);

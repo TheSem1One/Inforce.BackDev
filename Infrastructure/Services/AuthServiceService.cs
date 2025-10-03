@@ -29,6 +29,10 @@ namespace Infrastructure.Services
 
         public async Task<string> RegisterAsync(RegisterDto dto)
         {
+            if (dto.Password != dto.ConfirmPassword)
+            {
+                throw new Exception("Password and Confirm Password do not match");
+            }
             dto.Password = _hash.HashingPassword(dto.Password);
             var user = dto.Adapt<User>();
 
