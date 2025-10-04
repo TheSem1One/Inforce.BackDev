@@ -4,6 +4,7 @@ using API.Extensions;
 using API.Transformers;
 using Application.Common.Interfaces;
 using Application.Features.Urls;
+using Application.Features.UserContext;
 using Infrastructure.Context;
 using Infrastructure.Helper;
 using Infrastructure.Options;
@@ -59,7 +60,7 @@ namespace API
 
             builder.Services.AddScoped<IAuthService, AuthServiceService>();
             builder.Services.AddScoped<IUrlService, UrlServiceService>();
-            builder.Services.AddScoped<UserContext>();
+            builder.Services.AddScoped<IUserContext,UserContext>();
             builder.Services.AddTransient<Hashing>();
             builder.Services.AddTransient<TokenManipulation>();
             builder.Services.AddTransient<UrlShortener>();

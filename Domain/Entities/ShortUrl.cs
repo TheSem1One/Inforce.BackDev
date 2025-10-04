@@ -12,7 +12,8 @@ namespace Domain.Entity
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public User CreateBy { get; set; }
-        public Guid CreateById { get; set; }
+        public User Creator { get; set; }
+
+        public Guid CreatorId { get; set; }
     }
 }

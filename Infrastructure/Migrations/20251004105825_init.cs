@@ -34,23 +34,23 @@ namespace Infrastructure.Migrations
                     OriginalUrl = table.Column<string>(type: "text", nullable: false),
                     ShortedUrl = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreateById = table.Column<Guid>(type: "uuid", nullable: false)
+                    CreatorId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShortUrl", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShortUrl_Users_CreateById",
-                        column: x => x.CreateById,
+                        name: "FK_ShortUrl_Users_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShortUrl_CreateById",
+                name: "IX_ShortUrl_CreatorId",
                 table: "ShortUrl",
-                column: "CreateById");
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShortUrl_OriginalUrl",

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Features.Urls.Dto;
 using Application.Features.UserContext;
+using Domain.Entities;
 using Domain.Entity;
 using Infrastructure.Helper;
 using Infrastructure.Persistence;
@@ -21,7 +22,7 @@ namespace Infrastructure.Services
             {
                 OriginalUrl = urlDto.OriginalUrl,
                 ShortedUrl = _shortener.CreateShortUrl(urlDto.OriginalUrl),
-                CreateById = _context.Id,
+                CreatorId = _context.Id,
             };
 
             await _db.ShortUrl.AddAsync(url);
@@ -38,10 +39,16 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<UrlDto>> GetUrlAsync()
         {
-            var urls = await _db.ShortUrl.ToListAsync();
-            var getUrlDto = urls.Adapt<List<UrlDto>>();
-
-            return getUrlDto;
+            return await _db.ShortUrl
+                .Select(url=>new UrlDto
+                {
+                    Id = url.Id,
+                    OriginalUrl = url.OriginalUrl,
+                    ShortedUrl = url.ShortedUrl,
+                    CreatedById = url.Creator.Id,
+                    CreatorUsername = url.Creator.Username
+                }) 
+                .ToListAsync();
         }
 
         public async Task DeleteUrlAsync(Guid id)

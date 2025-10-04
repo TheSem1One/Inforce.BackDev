@@ -18,6 +18,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<ShortUrl>>> GetAll()
         {

@@ -13,6 +13,11 @@ namespace Infrastructure.Configurations
             builder
                 .HasIndex(shortUrl => shortUrl.OriginalUrl)
                 .IsUnique();
+
+            builder.HasOne(x => x.Creator)
+                .WithMany(s => s.ShortUrls)
+                .HasForeignKey(x => x.CreatorId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -29,9 +29,9 @@ namespace Infrastructure.Helper
         {
             var claims = new List<Claim>
             {
-              new Claim(ClaimTypes.Name, dto.Username),
+              new Claim("Username", dto.Username),
               new Claim("Id", dto.Id.ToString()),
-              new Claim(ClaimTypes.Role, dto.Role.ToString())
+              new Claim("Role", dto.Role.ToString())
             };
             return claims;
         }

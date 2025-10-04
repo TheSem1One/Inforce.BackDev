@@ -21,9 +21,22 @@ namespace Infrastructure.Context
             }
 
             var userClaims = httpContext.User;
-            Id = Guid.Parse(userClaims.FindFirstValue("Id")!);
-            Username = userClaims.FindFirstValue(ClaimTypes.Name)!;
-            Role = userClaims.FindFirstValue(ClaimTypes.Role)!;
+
+            var idClaim = userClaims.FindFirstValue("Id");
+            if (!string.IsNullOrEmpty(idClaim) && Guid.TryParse(idClaim, out var parsedId))
+            {
+                Id = parsedId;
+            }
+            else
+            {
+                logger.LogWarning("User Id claim is missing or invalid.");
+                Id = Guid.Empty;
+            }
+
+
+            Username = userClaims.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+
+            Role = userClaims.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
         }
     }
 }

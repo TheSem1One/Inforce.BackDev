@@ -61,11 +61,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CreateById")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("OriginalUrl")
                         .IsRequired()
@@ -77,7 +77,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreateById");
+                    b.HasIndex("CreatorId");
 
                     b.HasIndex("OriginalUrl")
                         .IsUnique();
@@ -87,13 +87,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entity.ShortUrl", b =>
                 {
-                    b.HasOne("Domain.Entities.User", "CreateBy")
+                    b.HasOne("Domain.Entities.User", "Creator")
                         .WithMany("ShortUrls")
-                        .HasForeignKey("CreateById")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CreateBy");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
